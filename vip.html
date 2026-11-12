@@ -71,7 +71,6 @@
         <button class="copy-btn" onclick="copyKey()">📋 SAO CHÉP KEY</button>
     </div>
     <script>
-        // Danh sách 5 Key VIP siêu khó
         const vipKeys = [
             "VIP-aB3xY9kLmN2pQr7Z", 
             "VIP-k9Lm2Pq7ZaB3xY9k", 
@@ -79,10 +78,23 @@
             "VIP-2Pq7ZaB3xk9LmY9k", 
             "VIP-xY9kLm2Pq7ZaB3xk"
         ];
+
         window.onload = function() {
-            let randomKey = vipKeys[Math.floor(Math.random() * vipKeys.length)];
-            document.getElementById('keyDisplay').innerText = randomKey;
+            // Lấy số thứ tự key đã lấy từ bộ nhớ trình duyệt (LocalStorage)
+            let currentIndex = parseInt(localStorage.getItem('vip_key_index')) || 0;
+            
+            // Nếu lấy quá 5 key thì quay vòng lại từ đầu
+            if (currentIndex >= vipKeys.length) {
+                currentIndex = 0; 
+            }
+
+            // Hiển thị key theo số thứ tự
+            document.getElementById('keyDisplay').innerText = vipKeys[currentIndex];
+            
+            // Lưu lại số thứ tự cho lần lấy sau
+            localStorage.setItem('vip_key_index', currentIndex + 1);
         };
+
         function copyKey() {
             let code = document.getElementById('keyDisplay').innerText;
             navigator.clipboard.writeText(code).then(() => {
