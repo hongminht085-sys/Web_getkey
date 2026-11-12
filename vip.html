@@ -18,7 +18,6 @@
             min-height: 100vh;
             padding: 20px;
         }
-
         .box {
             background: rgba(10, 15, 25, 0.9);
             border: 2px solid #00f3ff;
@@ -31,38 +30,24 @@
             position: relative;
             animation: fadeIn 0.5s ease;
         }
-
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00f3ff;
-            font-size: 18px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-        }
-
+        h2 { font-family: 'Orbitron', sans-serif; color: #00f3ff; font-size: 18px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
         p { color: #aaa; font-size: 13px; margin-bottom: 20px; }
-
         .key-display {
             background: #000;
             border: 1px dashed #00f3ff;
             padding: 15px;
             border-radius: 8px;
-            font-size: 24px;
+            font-size: 20px;
             color: #fff;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin-bottom: 15px;
             user-select: all;
             cursor: pointer;
             transition: all 0.3s;
+            word-break: break-all;
         }
-
-        .key-display:hover {
-            background: rgba(0, 243, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
-        }
-
+        .key-display:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
         .copy-btn {
             background: transparent;
             color: #00f3ff;
@@ -75,32 +60,29 @@
             transition: all 0.3s;
             width: 100%;
         }
-
-        .copy-btn:hover {
-            background: #00f3ff;
-            color: #000;
-        }
+        .copy-btn:hover { background: #00f3ff; color: #000; }
     </style>
 </head>
 <body>
-
     <div class="box">
         <h2>✅ VƯỢT LINK THÀNH CÔNG!</h2>
         <p>Hệ thống đã xác minh. Đây là Key VIP của bạn:</p>
-        
         <div class="key-display" id="keyDisplay">ĐANG TẠO...</div>
-        
         <button class="copy-btn" onclick="copyKey()">📋 SAO CHÉP KEY</button>
     </div>
-
     <script>
-        // Tự động tạo key ngẫu nhiên khi tải trang
+        // Danh sách 5 Key VIP siêu khó
+        const vipKeys = [
+            "VIP-aB3xY9kLmN2pQr7Z", 
+            "VIP-k9Lm2Pq7ZaB3xY9k", 
+            "VIP-7ZaB3xk9Lm2PqY9x", 
+            "VIP-2Pq7ZaB3xk9LmY9k", 
+            "VIP-xY9kLm2Pq7ZaB3xk"
+        ];
         window.onload = function() {
-            let key = "VIP-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-            document.getElementById('keyDisplay').innerText = key;
+            let randomKey = vipKeys[Math.floor(Math.random() * vipKeys.length)];
+            document.getElementById('keyDisplay').innerText = randomKey;
         };
-
-        // Hàm copy key
         function copyKey() {
             let code = document.getElementById('keyDisplay').innerText;
             navigator.clipboard.writeText(code).then(() => {
