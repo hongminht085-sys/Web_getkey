@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Super VIP - Nhận Thành Công</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #050505;
+            background-image: radial-gradient(circle at 50% 50%, rgba(255, 170, 0, 0.1), transparent 50%);
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .box {
+            background: rgba(15, 10, 5, 0.9);
+            border: 2px solid #ffaa00;
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.2), inset 0 0 20px rgba(255, 170, 0, 0.1);
+            position: relative;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #ffaa00;
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        }
+
+        p { color: #aaa; font-size: 13px; margin-bottom: 20px; }
+
+        .key-display {
+            background: #000;
+            border: 1px dashed #ffaa00;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 24px;
+            color: #ffaa00;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            user-select: all;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+        }
+
+        .key-display:hover {
+            background: rgba(255, 170, 0, 0.1);
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+        }
+
+        .copy-btn {
+            background: transparent;
+            color: #ffaa00;
+            border: 1px solid #ffaa00;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .copy-btn:hover {
+            background: #ffaa00;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>👑 VƯỢT LINK THÀNH CÔNG!</h2>
+        <p>Hệ thống đã xác minh 2 bước. Đây là Key SUPER VIP của bạn:</p>
+        
+        <div class="key-display" id="keyDisplay">ĐANG TẠO...</div>
+        
+        <button class="copy-btn" onclick="copyKey()">📋 SAO CHÉP KEY</button>
+    </div>
+
+    <script>
+        // Tự động tạo key ngẫu nhiên khi tải trang
+        window.onload = function() {
+            let key = "SVIP-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+            document.getElementById('keyDisplay').innerText = key;
+        };
+
+        // Hàm copy key
+        function copyKey() {
+            let code = document.getElementById('keyDisplay').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                let display = document.getElementById('keyDisplay');
+                display.innerText = "✅ ĐÃ COPY!";
+                display.style.color = "#00ff88";
+                display.style.borderColor = "#00ff88";
+                setTimeout(() => {
+                    display.innerText = code;
+                    display.style.color = "#ffaa00";
+                    display.style.borderColor = "#ffaa00";
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
