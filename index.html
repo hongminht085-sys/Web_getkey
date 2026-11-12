@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HỆ THỐNG GET KEY VIP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0a0a0a;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #0a0a0a 100%);
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(20, 20, 30, 0.8);
+            border: 2px solid #00f3ff;
+            border-radius: 15px;
+            padding: 30px 20px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0, 243, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent, #00f3ff, transparent 30%);
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+        .container::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: #0a0a0a;
+            border-radius: 13px;
+            z-index: -1;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00f3ff;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+        }
+        .subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-vip {
+            background: linear-gradient(90deg, #ff007f, #ff00cc);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+        }
+        .btn-vip:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.8);
+            transform: translateY(-2px);
+        }
+        .btn-svip {
+            background: linear-gradient(90deg, #f9d423, #ff4e50);
+            color: #111;
+            box-shadow: 0 0 15px rgba(249, 212, 35, 0.5);
+        }
+        .btn-svip:hover {
+            box-shadow: 0 0 25px rgba(249, 212, 35, 0.8);
+            transform: translateY(-2px);
+        }
+        .key-box {
+            display: none;
+            background: #000;
+            border: 2px dashed #00ff88;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        .key-box h3 {
+            color: #00ff88;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 10px;
+        }
+        .key-text {
+            font-size: 22px;
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 3px;
+            word-break: break-all;
+            padding: 10px;
+            background: #111;
+            border-radius: 5px;
+            border: 1px solid #333;
+            cursor: pointer;
+            user-select: all;
+        }
+        .timer {
+            display: none;
+            color: #ff3333;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 15px;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Get Key System</h1>
+        <p class="subtitle">Chọn gói bạn muốn nhận để lấy Key</p>
+
+        <a href="#" class="btn btn-vip" onclick="batDau('vip')">
+            🚀 NHẬN KEY VIP (1 Lượt)
+        </a>
+        <a href="#" class="btn btn-svip" onclick="batDau('supervip')">
+            👑 NHẬN KEY SUPER VIP (2 Lượt)
+        </a>
+
+        <div id="keyArea" class="key-box">
+            <h3>✅ KEY CỦA BẠN:</h3>
+            <div id="keyText" class="key-text">...</div>
+        </div>
+
+        <div id="timerArea" class="timer"></div>
+    </div>
+
+    <script>
+        function batDau(loai) {
+            let linkVip = "https://link4m.com/LINK_VIP_CUA_BAN"; 
+            let linkSvip = "https://layma.net/LINK_SVIP_CUA_BAN";
+
+            if (loai === 'vip') {
+                // window.location.href = linkVip; 
+                hienThiKey('VIP');
+            } else {
+                // window.location.href = linkSvip; 
+                hienThiKey('SUPER VIP');
+            }
+        }
+
+        function hienThiKey(loai) {
+            let keyBox = document.getElementById('keyArea');
+            let keyText = document.getElementById('keyText');
+            let timerBox = document.getElementById('timerArea');
+            
+            let randomStr = Math.random().toString(36).substring(2, 10).toUpperCase();
+            let finalKey = loai.replace(" ", "-") + "-" + randomStr;
+
+            keyBox.style.display = "block";
+            keyText.innerText = finalKey;
+
+            timerBox.style.display = "block";
+            let timeLeft = 60;
+            
+            if(window.countdownInterval) clearInterval(window.countdownInterval);
+
+            window.countdownInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(window.countdownInterval);
+                    keyBox.style.display = "none";
+                    timerBox.innerText = "⏰ Hết thời gian! Key đã bị hủy. Vui lòng tải lại trang để lấy lại.";
+                    timerBox.style.color = "#ff3333";
+                    timerBox.style.display = "block";
+                } else {
+                    timerBox.innerText = `⚠️ Vui lòng sao chép Key trong: ${timeLeft} giây!`;
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+  </html>
