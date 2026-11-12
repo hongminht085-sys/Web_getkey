@@ -26,12 +26,9 @@
             text-align: center;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 0 30px rgba(255, 170, 0, 0.2), inset 0 0 20px rgba(255, 170, 0, 0.1);
-            position: relative;
-            animation: fadeIn 0.5s ease;
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.2);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        h2 { font-family: 'Orbitron', sans-serif; color: #ffaa00; font-size: 18px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255, 170, 0, 0.5); }
+        h2 { font-family: 'Orbitron', sans-serif; color: #ffaa00; font-size: 18px; margin-bottom: 10px; }
         p { color: #aaa; font-size: 13px; margin-bottom: 20px; }
         .key-display {
             background: #000;
@@ -44,11 +41,8 @@
             margin-bottom: 15px;
             user-select: all;
             cursor: pointer;
-            transition: all 0.3s;
-            text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
             word-break: break-all;
         }
-        .key-display:hover { background: rgba(255, 170, 0, 0.1); box-shadow: 0 0 15px rgba(255, 170, 0, 0.4); }
         .copy-btn {
             background: transparent;
             color: #ffaa00;
@@ -58,38 +52,47 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s;
             width: 100%;
         }
-        .copy-btn:hover { background: #ffaa00; color: #000; }
     </style>
 </head>
 <body>
     <div class="box">
         <h2>👑 VƯỢT LINK THÀNH CÔNG!</h2>
-        <p>Hệ thống đã xác minh 2 bước. Đây là Key SUPER VIP của bạn:</p>
+        <p>Đây là Key SUPER VIP của bạn (Có hiệu lực trong hôm nay):</p>
         <div class="key-display" id="keyDisplay">ĐANG TẠO...</div>
         <button class="copy-btn" onclick="copyKey()">📋 SAO CHÉP KEY</button>
     </div>
     <script>
-        const svipKeys = [
-            "SVIP-mQ9xZ2kL7bA3xY9p", 
-            "SVIP-Z2kL7bA3xY9pmQ9x", 
-            "SVIP-3xY9pmQ9xZ2kL7bA", 
-            "SVIP-7bA3xY9pmQ9xZ2kL", 
-            "SVIP-pmQ9xZ2kL7bA3xY9"
-        ];
+        function getDailySeed() {
+            let today = new Date();
+            let vnTime = new Date(today.getTime() + (7 * 60 * 60 * 1000));
+            let dateString = vnTime.toISOString().slice(0, 10);
+            let hash = 0;
+            for (let i = 0; i < dateString.length; i++) {
+                hash = dateString.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return Math.abs(hash);
+        }
 
         window.onload = function() {
-            // Lấy số thứ tự key đã lấy từ bộ nhớ trình duyệt
-            let currentIndex = parseInt(localStorage.getItem('svip_key_index')) || 0;
-            
-            if (currentIndex >= svipKeys.length) {
-                currentIndex = 0; 
+            let seed = getDailySeed();
+            let svipKeysToday = [];
+            for (let i = 0; i < 5; i++) {
+                let fakeRandom = (seed + i * 2000) % 9999999; 
+                let keyStr = "SVIP-";
+                let tempSeed = fakeRandom;
+                for(let j=0; j<16; j++) {
+                    let charCode = (tempSeed * (j + 1)) % 62;
+                    let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    keyStr += chars[charCode];
+                    tempSeed += 54321;
+                }
+                svipKeysToday.push(keyStr);
             }
 
-            document.getElementById('keyDisplay').innerText = svipKeys[currentIndex];
-            localStorage.setItem('svip_key_index', currentIndex + 1);
+            let randomIndex = Math.floor(Math.random() * svipKeysToday.length);
+            document.getElementById('keyDisplay').innerText = svipKeysToday[randomIndex];
         };
 
         function copyKey() {
@@ -98,11 +101,9 @@
                 let display = document.getElementById('keyDisplay');
                 display.innerText = "✅ ĐÃ COPY!";
                 display.style.color = "#00ff88";
-                display.style.borderColor = "#00ff88";
                 setTimeout(() => {
                     display.innerText = code;
                     display.style.color = "#ffaa00";
-                    display.style.borderColor = "#ffaa00";
                 }, 1500);
             });
         }
