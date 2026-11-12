@@ -26,12 +26,9 @@
             text-align: center;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0, 243, 255, 0.1);
-            position: relative;
-            animation: fadeIn 0.5s ease;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        h2 { font-family: 'Orbitron', sans-serif; color: #00f3ff; font-size: 18px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+        h2 { font-family: 'Orbitron', sans-serif; color: #00f3ff; font-size: 18px; margin-bottom: 10px; }
         p { color: #aaa; font-size: 13px; margin-bottom: 20px; }
         .key-display {
             background: #000;
@@ -44,10 +41,8 @@
             margin-bottom: 15px;
             user-select: all;
             cursor: pointer;
-            transition: all 0.3s;
             word-break: break-all;
         }
-        .key-display:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
         .copy-btn {
             background: transparent;
             color: #00f3ff;
@@ -57,42 +52,61 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s;
             width: 100%;
         }
-        .copy-btn:hover { background: #00f3ff; color: #000; }
     </style>
 </head>
 <body>
     <div class="box">
         <h2>✅ VƯỢT LINK THÀNH CÔNG!</h2>
-        <p>Hệ thống đã xác minh. Đây là Key VIP của bạn:</p>
+        <p>Đây là Key VIP của bạn (Có hiệu lực trong hôm nay):</p>
         <div class="key-display" id="keyDisplay">ĐANG TẠO...</div>
         <button class="copy-btn" onclick="copyKey()">📋 SAO CHÉP KEY</button>
     </div>
     <script>
-        const vipKeys = [
-            "VIP-aB3xY9kLmN2pQr7Z", 
-            "VIP-k9Lm2Pq7ZaB3xY9k", 
-            "VIP-7ZaB3xk9Lm2PqY9x", 
-            "VIP-2Pq7ZaB3xk9LmY9k", 
-            "VIP-xY9kLm2Pq7ZaB3xk"
-        ];
+        // Hàm tạo Key siêu khó ngẫu nhiên
+        function generateHardKey(prefix) {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            let result = prefix + "-";
+            for (let i = 0; i < 16; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // Hàm băm ngày tháng để tạo seed (hạt giống) cố định cho mỗi ngày
+        function getDailySeed() {
+            let today = new Date();
+            let vnTime = new Date(today.getTime() + (7 * 60 * 60 * 1000));
+            let dateString = vnTime.toISOString().slice(0, 10); // YYYY-MM-DD
+            let hash = 0;
+            for (let i = 0; i < dateString.length; i++) {
+                hash = dateString.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return Math.abs(hash);
+        }
 
         window.onload = function() {
-            // Lấy số thứ tự key đã lấy từ bộ nhớ trình duyệt (LocalStorage)
-            let currentIndex = parseInt(localStorage.getItem('vip_key_index')) || 0;
-            
-            // Nếu lấy quá 5 key thì quay vòng lại từ đầu
-            if (currentIndex >= vipKeys.length) {
-                currentIndex = 0; 
+            let seed = getDailySeed();
+            // Tạo 5 key VIP khác nhau dựa trên ngày
+            let vipKeysToday = [];
+            for (let i = 0; i < 5; i++) {
+                // Sử dụng seed + i để tạo key cố định cho ngày hôm đó
+                let fakeRandom = (seed + i * 1000) % 9999999; 
+                let keyStr = "VIP-";
+                let tempSeed = fakeRandom;
+                for(let j=0; j<16; j++) {
+                    let charCode = (tempSeed * (j + 1)) % 62;
+                    let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    keyStr += chars[charCode];
+                    tempSeed += 12345; // Thay đổi seed để ký tự tiếp theo khác đi
+                }
+                vipKeysToday.push(keyStr);
             }
 
-            // Hiển thị key theo số thứ tự
-            document.getElementById('keyDisplay').innerText = vipKeys[currentIndex];
-            
-            // Lưu lại số thứ tự cho lần lấy sau
-            localStorage.setItem('vip_key_index', currentIndex + 1);
+            // Hiển thị 1 trong 5 key (chọn ngẫu nhiên trên máy người dùng)
+            let randomIndex = Math.floor(Math.random() * vipKeysToday.length);
+            document.getElementById('keyDisplay').innerText = vipKeysToday[randomIndex];
         };
 
         function copyKey() {
@@ -101,11 +115,9 @@
                 let display = document.getElementById('keyDisplay');
                 display.innerText = "✅ ĐÃ COPY!";
                 display.style.color = "#00ff88";
-                display.style.borderColor = "#00ff88";
                 setTimeout(() => {
                     display.innerText = code;
                     display.style.color = "#fff";
-                    display.style.borderColor = "#00f3ff";
                 }, 1500);
             });
         }
